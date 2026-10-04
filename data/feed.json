@@ -1,0 +1,122 @@
+{
+ "updated_at": "2026-10-04T07:20:00+02:00",
+ "posts": [
+  {
+   "id": "seed-journal-2026-10-04",
+   "ts": "2026-10-04T07:20:00+02:00",
+   "kind": "journal",
+   "emoji": "🗞️",
+   "text": "Le journal du dimanche 4 octobre 2026 est prêt. Week-end calme pour la crypto : le BTC tient vers 84 800 $ (+0,28 % sur 24 h) dans une fourchette étroite de 84 500-85 000 $, l'ETH gagne 0,60 % et le SOL 1,18 %.",
+   "tickers": [
+    "BTC"
+   ],
+   "importance": 2,
+   "sources": [
+    {
+     "label": "Ouvrir le journal",
+     "url": "journal.html"
+    }
+   ]
+  },
+  {
+   "id": "seed-aramco",
+   "ts": "2026-10-04T07:19:00+02:00",
+   "kind": "finance",
+   "emoji": "🔥",
+   "text": "Les Houthis revendiquent une frappe sur un site d'Aramco au sud de Riyad. Ni Riyad ni Aramco n'ont confirmé. À surveiller à la réouverture du pétrole dimanche soir (Brent 102,25 $ à la clôture de vendredi).",
+   "tickers": [],
+   "importance": 3,
+   "sources": [
+    {
+     "label": "Al Jazeera (4/10)",
+     "url": "https://www.aljazeera.com/news/2026/10/4/houthis-claim-strike-on-saudi-energy-facility-as-yemen-fighting-intensifies"
+    },
+    {
+     "label": "The National (4/10)",
+     "url": "https://www.thenationalnews.com/news/gulf/2026/10/04/yemen-government-forces-strike-sanaa-and-saada-as-houthis-claim-aramco-attack/"
+    }
+   ]
+  },
+  {
+   "id": "seed-opep",
+   "ts": "2026-10-04T07:18:00+02:00",
+   "kind": "finance",
+   "emoji": "🛢️",
+   "text": "OPEP+ réunie ce dimanche : le maintien des objectifs de production de novembre est attendu.",
+   "tickers": [],
+   "importance": 2,
+   "sources": [
+    {
+     "label": "Investing.com (Reuters, 30/09)",
+     "url": "https://www.investing.com/news/commodities-news/opec-oil-producers-set-to-keep-output-targets-steady-at-sunday-meeting-sources-say-4924342"
+    },
+    {
+     "label": "Yahoo Finance (30/09)",
+     "url": "https://finance.yahoo.com/energy/articles/opec-expected-keep-november-oil-102921735.html"
+    }
+   ]
+  },
+  {
+   "id": "seed-sec-3x",
+   "ts": "2026-10-04T07:17:00+02:00",
+   "kind": "finance",
+   "emoji": "⚖️",
+   "text": "La SEC ouvre la voie aux premiers produits à levier ×3 sur le bitcoin et l'ether aux États-Unis (Volatility Shares, Cboe BZX). Aucune date de cotation pour l'instant.",
+   "tickers": [
+    "BTC",
+    "ETH"
+   ],
+   "importance": 2,
+   "sources": [
+    {
+     "label": "Coinpedia (3/10)",
+     "url": "https://coinpedia.org/crypto-live-news/sec-approves-first-3x-leveraged-bitcoin-and-ether-etps-in-the-us/"
+    },
+    {
+     "label": "TechFlow (3/10)",
+     "url": "https://www.techflowpost.com/en-US/article/34361"
+    }
+   ]
+  },
+  {
+   "id": "seed-zzz",
+   "ts": "2026-10-04T07:16:00+02:00",
+   "kind": "meme",
+   "emoji": "💤",
+   "text": "ZZZ (Robinhood Chain) mène les memes de plus de 10 M$ : +18,72 % sur 24 h, 12,98 M$ de capitalisation, sans catalyseur identifié. Volume DEX faible : prudence.",
+   "tickers": [
+    "ZZZ"
+   ],
+   "importance": 1,
+   "sources": [
+    {
+     "label": "API CMC",
+     "url": "https://api.coinmarketcap.com/data-api/v3/cryptocurrency/listing?start=1&limit=60&sortBy=percent_change_24h&sortType=desc&convert=USD&cryptoType=all&tagType=all&tagSlugs=memes&audited=false&t=20261004x0510"
+    },
+    {
+     "label": "DexScreener",
+     "url": "https://dexscreener.com/robinhood/0x6538e2c223ed70228114983afecbe5e69fe627e2fafdf367bdd6bdeff2ad391f"
+    }
+   ]
+  },
+  {
+   "id": "seed-bukangi",
+   "ts": "2026-10-04T07:15:00+02:00",
+   "kind": "trend",
+   "emoji": "🦈",
+   "text": "Bukangi, le requin de Busan, a franchi le filet samedi et reste dans le canal : deuxième échec des secours. L'histoire continue.",
+   "tickers": [],
+   "importance": 1,
+   "sources": [
+    {
+     "label": "Korea JoongAng Daily (03/10)",
+     "url": "https://www.koreajoongangdaily.com/korea/busan-shark-slips-past-rescue-net-returns-to-canal-saturday/12903433"
+    },
+    {
+     "label": "Seoul Economic Daily (03/10)",
+     "url": "https://en.sedaily.com/society/2026/10/03/shark-clears-net-returns-to-busan-north-port-channel-in-a"
+    }
+   ]
+  }
+ ]
+}

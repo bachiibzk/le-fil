@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Le Fil</title>
+<meta name="description" content="Fil d'infos crypto, meme coins, marchés et tech, rédigé par Claude.">
+<meta name="theme-color" content="#2442C4">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Le Fil">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@700;800&family=Source+Sans+3:wght@400;600;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="top">
+  <div class="top-inner">
+    <div class="brand">
+      <div class="status"><span class="dot" id="dot"></span><span id="status">Connexion…</span></div>
+      <h1 id="view-title">Le Fil</h1>
+    </div>
+    <button class="icon-btn" id="refresh" aria-label="Actualiser">↻</button>
+  </div>
+  <div class="ticker" id="ticker" aria-label="Prix en direct"></div>
+</header>
+
+<button class="new-pill" id="new-pill" hidden></button>
+
+<main id="app"></main>
+
+<nav class="tabs" aria-label="Sections">
+  <div class="inner">
+    <a href="#fil" data-tab="fil"><span class="ti">💬</span>Fil</a>
+    <a href="#marches" data-tab="marches"><span class="ti">📊</span>Marchés</a>
+    <a href="journal.html"><span class="ti">🗞️</span>Journal</a>
+    <a href="#reglages" data-tab="reglages"><span class="ti">⚙️</span>Réglages</a>
+  </div>
+</nav>
+
+<script src="app.js"></script>
+</body>
+</html>

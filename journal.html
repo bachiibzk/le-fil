@@ -1,0 +1,554 @@
+<!doctype html><html lang="fr"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Journal du matin</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="theme-color" content="#2442C4">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@500;700;800&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout : app mobile. En-tête collant (édition + sélecteur de date), une section par onglet, barre d'onglets fixée en bas. */
+:root {
+  --bg: #EDF0F3;
+  --surface: #FFFFFF;
+  --line: #D5DCE3;
+  --ink: #0F1D2A;
+  --muted: #5A6B7B;
+  --accent: #2442C4;
+  --accent-soft: #E3E8FB;
+  --up: #12804A;
+  --up-soft: #E1F3E9;
+  --down: #BF2F28;
+  --down-soft: #FBE6E4;
+  --warn: #9A6200;
+  --warn-soft: #FBF0D9;
+  --font-display: "Schibsted Grotesk", "Helvetica Neue", Arial, sans-serif;
+  --font-body: "Source Sans 3", "Segoe UI", system-ui, sans-serif;
+  --font-data: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --radius: 10px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0B1117; --surface: #131B23; --line: #25313C; --ink: #E4EBF1; --muted: #8C9CAB;
+    --accent: #8EA6FF; --accent-soft: #1C2748; --up: #4CC98A; --up-soft: #12301F;
+    --down: #F07A72; --down-soft: #3A1A18; --warn: #E9B350; --warn-soft: #332611;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0B1117; --surface: #131B23; --line: #25313C; --ink: #E4EBF1; --muted: #8C9CAB;
+  --accent: #8EA6FF; --accent-soft: #1C2748; --up: #4CC98A; --up-soft: #12301F;
+  --down: #F07A72; --down-soft: #3A1A18; --warn: #E9B350; --warn-soft: #332611;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font-family: var(--font-body); font-size: 16px; line-height: 1.5; -webkit-font-smoothing: antialiased; }
+a { color: var(--accent); }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+
+.top { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--bg); border-bottom: 1px solid var(--line); }
+.top-inner { max-width: 760px; margin: 0 auto; padding: 12px 16px 10px; display: flex; align-items: center; gap: 12px; }
+.brand { flex: 1; min-width: 0; }
+.eyebrow { font-family: var(--font-data); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.edition-date { font-family: var(--font-display); font-weight: 800; font-size: 21px; line-height: 1.15; letter-spacing: -.01em; text-wrap: balance; }
+.edition-date::first-letter { text-transform: uppercase; }
+select#edition { font: 600 14px var(--font-body); color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 7px 8px; max-width: 150px; }
+
+main { max-width: 760px; margin: 0 auto; padding-inline: 16px; padding-block: 16px 110px; }
+section.tab { display: grid; gap: 18px; }
+h2 { font-family: var(--font-display); font-weight: 700; font-size: 19px; margin: 6px 0 0; letter-spacing: -.005em; text-wrap: balance; }
+h3 { font-family: var(--font-display); font-weight: 700; font-size: 16px; line-height: 1.3; margin: 0; text-wrap: balance; }
+p { margin: 0; }
+.muted { color: var(--muted); }
+.small { font-size: 13.5px; line-height: 1.45; }
+.stack { display: grid; gap: 10px; }
+
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 14px; display: grid; gap: 8px; min-width: 0; }
+
+/* Essentiel */
+.essentials { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); }
+.essentials li { padding: 12px 14px; display: grid; grid-template-columns: 24px 1fr; gap: 8px; border-top: 1px solid var(--line); }
+.essentials li:first-child { border-top: 0; }
+.essentials .n { font-family: var(--font-data); font-weight: 600; color: var(--accent); font-size: 14px; padding-top: 2px; }
+.period { font-size: 13px; color: var(--muted); }
+
+/* Tuiles marché */
+.tiles { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 8px; }
+.tile { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; display: grid; gap: 2px; min-width: 0; }
+.tile .asset { font-size: 13px; font-weight: 600; color: var(--muted); }
+.tile .level { font-family: var(--font-data); font-weight: 600; font-size: 16px; font-variant-numeric: tabular-nums; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tile .note { font-size: 11.5px; color: var(--muted); line-height: 1.3; }
+.chg { font-family: var(--font-data); font-size: 13px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.chg.up { color: var(--up); } .chg.down { color: var(--down); } .chg.flat { color: var(--muted); }
+
+/* Pastilles */
+.pills { display: flex; flex-wrap: wrap; gap: 6px; }
+.pill { display: inline-flex; align-items: center; gap: 4px; font-size: 12px; font-weight: 600; padding: 2px 8px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); white-space: nowrap; }
+.pill.up { background: var(--up-soft); color: var(--up); }
+.pill.down { background: var(--down-soft); color: var(--down); }
+.pill.mixed, .pill.warn { background: var(--warn-soft); color: var(--warn); }
+.pill.neutral { background: var(--bg); color: var(--muted); border: 1px solid var(--line); }
+
+.sources { display: flex; flex-wrap: wrap; gap: 4px 10px; font-size: 12.5px; }
+.sources a { text-decoration: none; border-bottom: 1px solid color-mix(in srgb, var(--accent) 40%, transparent); }
+.sources::before { content: "Sources"; font-family: var(--font-data); font-size: 10.5px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); padding-top: 2px; }
+
+.why { font-size: 14px; color: var(--muted); }
+.why b { color: var(--ink); font-weight: 600; }
+.note-box { background: var(--warn-soft); color: var(--ink); border-radius: 8px; padding: 10px 12px; font-size: 13.5px; }
+.note-box b { color: var(--warn); }
+
+/* Agenda */
+.agenda { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); }
+.agenda .row { display: grid; grid-template-columns: 62px 1fr; gap: 10px; padding: 9px 14px; border-top: 1px solid var(--line); }
+.agenda .row:first-child { border-top: 0; }
+.agenda time { font-family: var(--font-data); font-size: 13.5px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.agenda .row.past { opacity: .6; }
+
+/* Memes */
+.coin-head { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+.rank { font-family: var(--font-data); font-weight: 600; color: var(--muted); }
+.ticker { font-family: var(--font-data); font-size: 13px; color: var(--muted); }
+.coin-change { margin-left: auto; font-size: 17px; }
+.kv { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
+.kv div { display: grid; }
+.kv span:first-child { font-size: 11px; font-family: var(--font-data); text-transform: uppercase; letter-spacing: .05em; color: var(--muted); }
+.kv span:last-child { font-family: var(--font-data); font-size: 13.5px; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.risk { font-size: 13.5px; border-left: 3px solid var(--down); padding-left: 8px; }
+.table-wrap { overflow-x: auto; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); }
+table { border-collapse: collapse; width: 100%; font-size: 13.5px; }
+th, td { text-align: left; padding: 8px 12px; border-top: 1px solid var(--line); white-space: nowrap; }
+th { border-top: 0; font-family: var(--font-data); font-size: 11px; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); font-weight: 400; }
+td.num { font-family: var(--font-data); font-variant-numeric: tabular-nums; text-align: right; }
+th.num { text-align: right; }
+
+/* Filtres tendances */
+.filters { display: flex; gap: 6px; flex-wrap: wrap; }
+.filters button { font: 600 13px var(--font-body); padding: 6px 12px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); cursor: pointer; }
+.filters button[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.token { font-size: 13.5px; background: var(--bg); border-radius: 6px; padding: 7px 9px; }
+.token b { font-family: var(--font-data); font-size: 11px; letter-spacing: .05em; text-transform: uppercase; color: var(--muted); font-weight: 600; margin-right: 6px; }
+
+.disclaimer { font-size: 13px; color: var(--muted); border-top: 1px solid var(--line); padding-top: 12px; }
+.disclaimer strong { color: var(--down); }
+
+/* Barre d'onglets */
+nav.tabs { position: fixed; left: 0; right: 0; bottom: 0; z-index: 6; background: var(--surface); border-top: 1px solid var(--line); padding-bottom: env(safe-area-inset-bottom, 0px); }
+nav.tabs .inner { max-width: 760px; margin: 0 auto; display: grid; grid-template-columns: repeat(5, 1fr); }
+nav.tabs a { display: grid; justify-items: center; gap: 2px; padding: 8px 2px 9px; text-decoration: none; color: var(--muted); font-size: 11.5px; font-weight: 600; }
+nav.tabs a svg { width: 22px; height: 22px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+nav.tabs a[aria-current="page"] { color: var(--accent); }
+
+nav.tabs a .ti { font-size: 21px; line-height: 1; filter: grayscale(1) opacity(.6); transition: filter .15s, transform .15s; }
+nav.tabs a[aria-current="page"] .ti { filter: none; transform: translateY(-1px) scale(1.08); }
+.avatar { width: 34px; height: 34px; border-radius: 50%; display: inline-grid; place-items: center; font-size: 19px; background: var(--accent-soft); flex: none; align-self: center; }
+.essentials .n { font-size: 17px; }
+.links { display: flex; flex-wrap: wrap; gap: 6px; }
+.lnk { display: inline-flex; align-items: center; gap: 4px; font: 600 12.5px var(--font-body); padding: 5px 10px; border-radius: 999px; border: 1px solid var(--line); background: var(--bg); color: var(--ink); text-decoration: none; cursor: pointer; max-width: 100%; }
+.lnk:hover { border-color: var(--accent); color: var(--accent); }
+.lnk.copy, .lnk.addr { font-family: var(--font-data); font-size: 12px; }
+.lnk.addr { overflow-wrap: anywhere; user-select: all; }
+.coin-row h3 { font-size: 15px; }
+.drivers { display: grid; gap: 8px; background: var(--up-soft); border-radius: 8px; padding: 10px 12px; }
+.drivers-title { font-family: var(--font-display); font-weight: 700; font-size: 14px; color: var(--up); }
+.driver { display: grid; grid-template-columns: 26px 1fr; gap: 6px; font-size: 13.5px; line-height: 1.4; }
+.driver .d-icon { font-size: 17px; line-height: 1.2; }
+.driver b { font-weight: 700; }
+.driver-watch { font-size: 13px; color: var(--warn); border-top: 1px solid color-mix(in srgb, var(--up) 25%, transparent); padding-top: 8px; }
+.carousel-wrap { display: grid; gap: 8px; min-width: 0; }
+.carousel-bar { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.carousel-ctrl { display: flex; align-items: center; gap: 8px; }
+.count { font-family: var(--font-data); font-size: 12.5px; color: var(--muted); font-variant-numeric: tabular-nums; min-width: 3.2em; text-align: center; }
+.nav-btn { width: 34px; height: 34px; border-radius: 50%; border: 1px solid var(--line); background: var(--surface); color: var(--ink); font-size: 20px; line-height: 1; cursor: pointer; }
+.nav-btn:disabled { opacity: .35; cursor: default; }
+.carousel { display: grid; grid-auto-flow: column; grid-auto-columns: 88%; gap: 10px; overflow-x: auto; scroll-snap-type: x mandatory; overscroll-behavior-x: contain; padding-bottom: 6px; align-items: start; scrollbar-width: thin; }
+@media (min-width: 700px) { .carousel { grid-auto-columns: 62%; } }
+.slide { scroll-snap-align: start; min-width: 0; }
+.pill.push { margin-left: auto; }
+.drivers.down { background: var(--down-soft); }
+.drivers.down .drivers-title { color: var(--down); }
+.drivers.flat { background: var(--accent-soft); }
+.drivers.flat .drivers-title { color: var(--accent); }
+.drivers .sources { font-size: 11.5px; }
+.scores { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px 12px; }
+.score { display: flex; justify-content: space-between; align-items: center; gap: 6px; font-size: 13px; }
+.dots { display: inline-flex; gap: 3px; }
+.dots i { width: 8px; height: 8px; border-radius: 50%; background: var(--line); display: inline-block; }
+.dots i.on { background: var(--accent); }
+.state { text-align: center; padding: 48px 16px; display: grid; gap: 8px; justify-items: center; }
+.state h2 { margin: 0; }
+@media (prefers-reduced-motion: no-preference) { section.tab { animation: rise .18s ease-out; } }
+@keyframes rise { from { transform: translateY(4px); } to { transform: none; } }
+</style>
+
+<header class="top">
+  <div class="top-inner">
+    <a href="./#fil" class="back" aria-label="Retour au fil" style="font-size:22px;text-decoration:none;padding:4px 6px 4px 0">←</a>
+    <div class="brand">
+      <div class="eyebrow" id="freshness">Journal du matin</div>
+      <div class="edition-date" id="edition-title">Édition du jour</div>
+    </div>
+    <select id="edition" aria-label="Choisir une édition" hidden></select>
+  </div>
+</header>
+
+<main id="app">
+  <div class="state" id="state">
+    <h2>Chargement de l'édition…</h2>
+    <p class="muted small">Chaque matin vers 7h, une nouvelle édition arrive ici : essentiel, marchés, meme coins, tendances et tech.</p>
+  </div>
+</main>
+
+<nav class="tabs" aria-label="Sections">
+  <div class="inner">
+    <a href="#essentiel" data-tab="essentiel"><span class="ti">📰</span>Essentiel</a>
+    <a href="#marches" data-tab="marches"><span class="ti">📊</span>Marchés</a>
+    <a href="#memes" data-tab="memes"><span class="ti">🐸</span>Memes</a>
+    <a href="#tendances" data-tab="tendances"><span class="ti">🔥</span>Tendances</a>
+    <a href="#tech" data-tab="tech"><span class="ti">🤖</span>Tech</a>
+  </div>
+</nav>
+
+<script type="application/json" id="journal-data">[]</script>
+<script>
+(function () {
+  "use strict";
+  var TABS = ["essentiel", "marches", "memes", "tendances", "tech"];
+  var editions = [];      // docs triés du plus récent au plus ancien
+  var current = null;     // édition affichée
+  var trendFilter = "tous";
+  var followLatest = true;
+
+  // ---------- helpers DOM (textContent uniquement : les données sont traitées comme non fiables) ----------
+  function h(tag, attrs) {
+    var el = document.createElement(tag);
+    if (attrs) for (var k in attrs) {
+      if (k === "text") el.textContent = attrs[k];
+      else if (k === "cls") el.className = attrs[k];
+      else el.setAttribute(k, attrs[k]);
+    }
+    for (var i = 2; i < arguments.length; i++) {
+      var c = arguments[i];
+      if (c == null || c === false) continue;
+      if (Array.isArray(c)) c.forEach(function (x) { if (x) el.appendChild(x); });
+      else el.appendChild(typeof c === "string" ? document.createTextNode(c) : c);
+    }
+    return el;
+  }
+  function em(o) { return o && o.emoji ? str(o.emoji) + " " : ""; }
+  var COIN = { DOGE: "🐕", SHIB: "🐶", PEPE: "🐸", PENGU: "🐧", BONK: "🐕", WIF: "🐶", FLOKI: "🐕", CASHCAT: "🐱" };
+  function coinEmoji(c) { return str(c && c.emoji) || COIN[str(c && c.ticker).toUpperCase()] || "🪙"; }
+  function assetEmoji(a) {
+    a = str(a).toLowerCase();
+    var map = [["s&p", "🇺🇸"], ["nasdaq", "💻"], ["dow", "🏭"], ["cac", "🇫🇷"], ["dax", "🇩🇪"], ["or", "🥇"], ["brent", "🛢️"], ["dxy", "💵"], ["btc", "🟠"], ["eth", "💎"], ["sol", "☀️"]];
+    for (var i = 0; i < map.length; i++) if (a === map[i][0] || a.indexOf(map[i][0] + " ") === 0 || (map[i][0].length > 2 && a.indexOf(map[i][0]) === 0)) return map[i][1];
+    return "📊";
+  }
+  function str(v) { return v == null ? "" : String(v); }
+  function arr(v) { return Array.isArray(v) ? v : []; }
+  function dir(change) {
+    var s = str(change).trim();
+    if (/^[+]/.test(s)) return "up";
+    if (/^[−\-–]/.test(s)) return "down";
+    return "flat";
+  }
+  function safeUrl(u) { u = str(u); return /^https:\/\//i.test(u) ? u : null; }
+  function sources(list) {
+    list = arr(list).filter(function (s) { return s && safeUrl(s.url); });
+    if (!list.length) return null;
+    return h("div", { cls: "sources" }, list.map(function (s) {
+      return h("a", { href: safeUrl(s.url), target: "_blank", rel: "noopener noreferrer", text: str(s.label) || "source" });
+    }));
+  }
+  function chg(v, extra) { return h("span", { cls: "chg " + dir(v) + (extra ? " " + extra : ""), text: str(v) || "n.d." }); }
+  var IMPACT = { up: ["up", "📈 Haussier"], down: ["down", "📉 Baissier"], mixed: ["mixed", "↔️ Incertain"] };
+  var POT = { fort: ["up", "🔥", "Potentiel fort"], moyen: ["mixed", "⚡", "Potentiel moyen"], faible: ["neutral", "💤", "Potentiel faible"], risque: ["down", "🚨", "Signal de risque"] };
+  var AGE = { "nouvelle": "🆕 Nouvelle", "en accélération": "🚀 En accélération", "en fin de vie": "🍂 En fin de vie" };
+
+  function disclaimer(e) {
+    return h("div", { cls: "disclaimer stack" },
+      e.limits ? h("p", { text: "Méthode et limites : " + str(e.limits) }) : null,
+      h("p", null, h("strong", { text: "⚠️ Informations, pas un conseil en investissement. Les meme coins sont très volatils." })));
+  }
+  function frDate(iso) {
+    try { return new Date(iso + "T12:00:00").toLocaleDateString("fr-FR", { weekday: "short", day: "numeric", month: "short" }); }
+    catch (err) { return iso; }
+  }
+
+  // ---------- onglets ----------
+  function tabFromHash() {
+    var t = (location.hash || "").replace("#", "");
+    return TABS.indexOf(t) >= 0 ? t : "essentiel";
+  }
+  function render() {
+    var app = document.getElementById("app");
+    var tab = tabFromHash();
+    document.querySelectorAll("nav.tabs a").forEach(function (a) {
+      if (a.getAttribute("data-tab") === tab) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current");
+    });
+    if (!current) return;
+    app.replaceChildren(VIEWS[tab](current), disclaimer(current));
+  }
+
+  var VIEWS = {
+    essentiel: function (e) {
+      return h("section", { cls: "tab" },
+        h("p", { cls: "period", text: str(e.period) }),
+        h("ol", { cls: "essentials" }, arr(e.essentials).map(function (t, i) {
+          return h("li", null, h("span", { cls: "n", text: ["1️⃣","2️⃣","3️⃣","4️⃣","5️⃣","6️⃣","7️⃣"][i] || String(i + 1) }), h("span", { text: str(t) }));
+        })),
+        h("h2", { text: "👀 À surveiller aujourd'hui" }),
+        h("div", { cls: "stack" }, arr(e.watch).map(function (w) {
+          return h("div", { cls: "card" }, h("h3", { text: em(w) + str(w.title) }), h("p", { cls: "small", text: str(w.text) }));
+        })),
+        h("h2", { text: "🗓️ Agenda du jour (heure de Paris)" }),
+        agenda(e),
+        sources(e.agenda_sources)
+      );
+    },
+    marches: function (e) {
+      return h("section", { cls: "tab" },
+        h("h2", { text: "📈 Niveaux de marché" }),
+        h("div", { cls: "tiles" }, arr(e.markets).map(function (m) {
+          return h("div", { cls: "tile" },
+            h("span", { cls: "asset", text: assetEmoji(m.asset) + " " + str(m.asset) }),
+            h("span", { cls: "level", text: str(m.level) || "n.d." }),
+            chg(m.change),
+            m.note ? h("span", { cls: "note", text: str(m.note) }) : null);
+        })),
+        e.markets_note ? h("p", { cls: "small muted", text: str(e.markets_note) }) : null,
+        sources([].concat.apply([], arr(e.markets).map(function (m) { return arr(m.sources); })).filter(uniq())),
+        h("h2", { text: "🗞️ News qui font bouger les cours" }),
+        h("div", { cls: "stack" }, arr(e.finance_news).map(function (n) {
+          var im = IMPACT[n.impact] || IMPACT.mixed;
+          return h("article", { cls: "card" },
+            h("div", { cls: "pills" }, h("span", { cls: "pill " + im[0], text: im[1] }), n.confirmed === false ? h("span", { cls: "pill warn", text: "⚠ Non confirmé" }) : null),
+            h("h3", { text: em(n) + str(n.title) }),
+            h("p", { cls: "small", text: str(n.summary) }),
+            h("p", { cls: "why" }, h("b", { text: "Impact : " }), str(n.impact_label), n.assets ? " · " + str(n.assets) : ""),
+            sources(n.sources));
+        })),
+        e.finance_notes ? h("div", { cls: "note-box" }, h("b", { text: "⚠ " }), str(e.finance_notes)) : null,
+        e.agenda_week ? h("h2", { text: "📅 Reste de la semaine" }) : null,
+        e.agenda_week ? h("div", { cls: "card" }, h("p", { cls: "small", text: str(e.agenda_week) })) : null
+      );
+    },
+    memes: function (e) {
+      var m = e.memes || {};
+      return h("section", { cls: "tab" },
+        h("h2", { text: "🚀 Top 5 des hausses sur 24 h (MC > 10 M$)" }),
+        m.note ? h("p", { cls: "small muted", text: str(m.note) }) : null,
+        carousel(arr(m.gainers).map(function (c) { return coinCard(c, "gainer"); }), "Top des hausses"),
+        m.excluded ? h("div", { cls: "note-box" }, h("b", { text: "⚠️ " }), str(m.excluded)) : null,
+        arr(m.radar).length ? h("h2", { text: "🧭 Mon radar : 5 memes à surveiller" }) : null,
+        m.radar_note ? h("p", { cls: "small muted", text: str(m.radar_note) }) : null,
+        arr(m.radar).length ? carousel(arr(m.radar).map(radarCard), "Radar") : null,
+        h("h2", { text: "👑 Top 5 par capitalisation" }),
+        carousel(arr(m.top_mcap).map(function (c) { return coinCard(c, "top"); }), "Top par capitalisation"),
+        h("h2", { text: "🔥 En tendance" }),
+        carousel(arr(m.trending).map(function (c) { return coinCard(c, "trending"); }), "En tendance"),
+        m.trending_note ? h("p", { cls: "small muted", text: str(m.trending_note) }) : null,
+        m.links_note ? h("p", { cls: "small muted", text: "🔗 " + str(m.links_note) }) : null,
+        sources(m.sources)
+      );
+    },
+    tendances: function (e) {
+      var list = arr(e.trends);
+      var filters = [["tous", "✨ Toutes"], ["fort", "🔥 Fort"], ["moyen", "⚡ Moyen"], ["faible", "💤 Faible"], ["risque", "🚨 Risque"]];
+      var bar = h("div", { cls: "filters", role: "group", "aria-label": "Filtrer par potentiel" }, filters.map(function (f) {
+        var b = h("button", { type: "button", "aria-pressed": String(trendFilter === f[0]), text: f[1] });
+        b.addEventListener("click", function () { trendFilter = f[0]; render(); });
+        return b;
+      }));
+      var shown = list.filter(function (t) { return trendFilter === "tous" || t.potential === trendFilter; });
+      return h("section", { cls: "tab" },
+        h("h2", { text: "🌐 Tendances réseaux sociaux" }),
+        bar,
+        h("div", { cls: "stack" }, shown.length ? shown.map(function (t) {
+          var p = POT[t.potential] || POT.faible;
+          return h("article", { cls: "card" },
+            h("div", { cls: "pills" },
+              h("span", { cls: "pill " + p[0], text: p[1] + " " + (str(t.potential_note) || p[2]) }),
+              h("span", { cls: "pill neutral", text: AGE[t.age] || str(t.age) }),
+              h("span", { cls: "pill neutral", text: str(t.platforms) })),
+            h("h3", { text: em(t) + str(t.title) }),
+            h("p", { cls: "small", text: str(t.description) }),
+            t.token ? h("p", { cls: "token" }, h("b", { text: "🪙 Token" }), str(t.token)) : null,
+            sources(t.sources));
+        }) : [h("p", { cls: "muted small", text: "Aucune tendance dans cette catégorie aujourd'hui." })]),
+        e.trends_excluded ? h("p", { cls: "small muted", text: str(e.trends_excluded) }) : null
+      );
+    },
+    tech: function (e) {
+      return h("section", { cls: "tab" },
+        h("h2", { text: "🤖 Tech" }),
+        h("div", { cls: "stack" }, arr(e.tech).map(function (n) {
+          return h("article", { cls: "card" },
+            n.confirmed === false ? h("div", { cls: "pills" }, h("span", { cls: "pill warn", text: "⚠️ Non confirmé" })) : null,
+            h("h3", { text: em(n) + str(n.title) }),
+            h("p", { cls: "small", text: str(n.summary) }),
+            n.why ? h("p", { cls: "why" }, h("b", { text: "💡 Pourquoi c'est important : " }), str(n.why)) : null,
+            sources(n.sources));
+        })),
+        e.tech_notes ? h("div", { cls: "note-box stack" }, h("p", null, h("b", { text: "⚠ " }), str(e.tech_notes)), sources(e.tech_notes_sources)) : null
+      );
+    }
+  };
+
+  var LINK_ICON = { chart: "📊", site: "🌐", x: "𝕏", telegram: "✈️", other: "🔗" };
+  function linkRow(c) {
+    var links = arr(c && c.links).filter(function (l) { return l && safeUrl(l.url); });
+    var addr = str(c && c.address);
+    if (!links.length && !addr) return null;
+    var row = h("div", { cls: "links" }, links.map(function (l) {
+      return h("a", { cls: "lnk", href: safeUrl(l.url), target: "_blank", rel: "noopener noreferrer", text: (LINK_ICON[l.kind] || "🔗") + " " + str(l.label) });
+    }));
+    if (addr) {
+      var b = h("button", { type: "button", cls: "lnk copy", title: addr, text: "📋 " + addr.slice(0, 6) + "…" + addr.slice(-4) });
+      b.addEventListener("click", function () {
+        var done = function () { b.textContent = "✅ Adresse copiée"; setTimeout(function () { b.textContent = "📋 " + addr.slice(0, 6) + "…" + addr.slice(-4); }, 1800); };
+        var fail = function () { var sp = h("span", { cls: "lnk addr", text: addr }); b.replaceWith(sp); var r = document.createRange(); r.selectNodeContents(sp); var sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(r); };
+        try { navigator.clipboard.writeText(addr).then(done, fail); } catch (err) { fail(); }
+      });
+      row.appendChild(b);
+    }
+    return row;
+  }
+  function kv(pairs) {
+    return h("div", { cls: "kv" }, pairs.map(function (p) { return h("div", null, h("span", { text: p[0] }), h("span", { text: str(p[1]) || "n.d." })); }));
+  }
+  function coinCard(c, kind) {
+    var sub = "$" + str(c.ticker) + (c.chain ? " · " + str(c.chain) : "");
+    var pairs = kind === "gainer" ? [["Prix", c.price], ["Market cap", c.mcap], ["Vol. 24 h", c.volume]]
+      : kind === "top" ? [["Prix", c.price], ["Market cap", c.mcap]]
+      : [["Market cap", c.mcap], ["Âge", c.age], ["Vu sur", c.where]];
+    return h("article", { cls: "card coin-card" },
+      h("div", { cls: "coin-head" },
+        h("span", { cls: "avatar", "aria-hidden": "true", text: coinEmoji(c) }),
+        c.rank ? h("span", { cls: "rank", text: "#" + str(c.rank) }) : null,
+        h("h3", { text: str(c.name) }),
+        chg(c.change, "coin-change")),
+      h("span", { cls: "ticker", text: sub }),
+      kv(pairs),
+      c.reason ? h("p", { cls: "why" }, h("b", { text: "💡 Raison probable : " }), str(c.reason)) : null,
+      pumpBox(c),
+      c.risk ? h("p", { cls: "risk", text: "⚠️ Risque : " + str(c.risk) }) : null,
+      linkRow(c));
+  }
+  function radarCard(r, i) {
+    var prof = { "Solide": "up", "Momentum": "mixed", "Spéculatif": "down" }[r.profile] || "neutral";
+    var sc = r.scores || {};
+    return h("article", { cls: "card coin-card radar" },
+      h("div", { cls: "coin-head" },
+        h("span", { cls: "avatar", "aria-hidden": "true", text: coinEmoji(r) }),
+        h("span", { cls: "rank", text: "#" + (i + 1) }),
+        h("h3", { text: str(r.name) }),
+        h("span", { cls: "pill " + prof + " push", text: str(r.profile) })),
+      h("span", { cls: "ticker", text: "$" + str(r.ticker) + (r.chain ? " · " + str(r.chain) : "") }),
+      h("p", { cls: "small", text: str(r.thesis) }),
+      h("div", { cls: "scores" }, Object.keys(sc).map(function (k) {
+        var v = Math.max(0, Math.min(5, Number(sc[k]) || 0));
+        return h("div", { cls: "score" }, h("span", { text: k }),
+          h("span", { cls: "dots", "aria-label": v + " sur 5" }, [1, 2, 3, 4, 5].map(function (n) { return h("i", { cls: n <= v ? "on" : "" }); })));
+      })),
+      r.invalidation ? h("p", { cls: "risk", text: "🛑 Thèse invalidée si : " + str(r.invalidation) }) : null,
+      linkRow(r));
+  }
+  function carousel(cards, label) {
+    cards = cards.filter(Boolean);
+    if (!cards.length) return h("p", { cls: "muted small", text: "n.d." });
+    var track = h("div", { cls: "carousel", tabindex: "0", role: "region", "aria-label": label }, cards.map(function (c) { return h("div", { cls: "slide" }, c); }));
+    var count = h("span", { cls: "count", text: "1 / " + cards.length });
+    var prev = h("button", { type: "button", cls: "nav-btn", "aria-label": "Précédent", text: "‹" });
+    var next = h("button", { type: "button", cls: "nav-btn", "aria-label": "Suivant", text: "›" });
+    function idx() { var w = track.firstChild.getBoundingClientRect().width + 10; return Math.round(track.scrollLeft / w); }
+    function go(d) { var w = track.firstChild.getBoundingClientRect().width + 10; track.scrollTo({ left: Math.max(0, idx() + d) * w, behavior: "smooth" }); }
+    function upd() { var i = Math.min(cards.length - 1, idx()); count.textContent = (i + 1) + " / " + cards.length; prev.disabled = i === 0; next.disabled = i >= cards.length - 1; }
+    prev.addEventListener("click", function () { go(-1); });
+    next.addEventListener("click", function () { go(1); });
+    track.addEventListener("scroll", function () { window.requestAnimationFrame(upd); }, { passive: true });
+    prev.disabled = true; if (cards.length < 2) next.disabled = true;
+    return h("div", { cls: "carousel-wrap" },
+      h("div", { cls: "carousel-bar" }, h("span", { cls: "small muted", text: "👉 Fais défiler" }), h("div", { cls: "carousel-ctrl" }, prev, count, next)),
+      track);
+  }
+  function pumpBox(c) {
+    var rows = arr(c && c.pump).filter(function (d) { return d && d.text; });
+    if (!rows.length) return null;
+    var d = dir(c.change);
+    var title = d === "up" ? "🚀 Pourquoi ça pump" : d === "down" ? "📉 Pourquoi ça baisse" : "🔎 Pourquoi ça bouge";
+    return h("div", { cls: "drivers " + d },
+      h("p", { cls: "drivers-title", text: title }),
+      rows.map(function (x) {
+        return h("div", { cls: "driver" }, h("span", { cls: "d-icon", "aria-hidden": "true", text: str(x.icon) || "•" }),
+          h("p", null, h("b", { text: str(x.label) + " · " }), str(x.text)));
+      }),
+      c.pump_watch ? h("p", { cls: "driver-watch", text: "⏳ " + str(c.pump_watch) }) : null,
+      sources(c.pump_sources));
+  }
+  function uniq() { var seen = {}; return function (s) { var k = s && s.url; if (!k || seen[k]) return false; seen[k] = 1; return true; }; }
+  function agenda(e) {
+    var rows = arr(e.agenda);
+    if (!rows.length) return h("p", { cls: "muted small", text: "Agenda n.d." });
+    return h("div", { cls: "agenda" }, rows.map(function (r) {
+      return h("div", { cls: "row" },
+        h("time", { text: str(r.time) }),
+        h("div", null, h("p", { cls: "small", text: str(r.event) }), r.note ? h("p", { cls: "small muted", text: str(r.note) }) : null));
+    }));
+  }
+  function coinTable(head, rows) {
+    if (!rows.length) return h("p", { cls: "muted small", text: "n.d." });
+    return h("div", { cls: "table-wrap" }, h("table", null,
+      h("thead", null, h("tr", null, head.map(function (x, i) { return h("th", { cls: i ? "num" : "", text: x }); }))),
+      h("tbody", null, rows.map(function (r) {
+        return h("tr", null, r.map(function (c, i) {
+          if (i === 0) return h("td", null, h("span", { cls: "ticker", text: c }));
+          if (i === 3 && head[3] === "24 h") return h("td", { cls: "num" }, chg(c));
+          return h("td", { cls: "num", text: c });
+        }));
+      }))));
+  }
+
+  // ---------- éditions ----------
+  function showEdition(id) {
+    current = editions.find(function (d) { return d.date === id; }) || editions[0] || null;
+    var title = document.getElementById("edition-title");
+    var fresh = document.getElementById("freshness");
+    if (!current) return;
+    title.textContent = str(current.date_label) || str(current.date);
+    var t = "";
+    try { t = new Date(current.generated_at).toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit", timeZone: "Europe/Paris" }); } catch (err) {}
+    fresh.textContent = (current === editions[0] ? "Dernière édition" : "Archive") + (t ? " · " + t.replace(":", "h") : "");
+    document.getElementById("edition").value = current.date;
+    render();
+  }
+  function fillSelect() {
+    var sel = document.getElementById("edition");
+    sel.replaceChildren.apply(sel, editions.map(function (d) { return h("option", { value: d.date, text: frDate(d.date) }); }));
+    sel.hidden = editions.length < 2;
+  }
+  function stateMsg(title, text) {
+    document.getElementById("app").replaceChildren(h("div", { cls: "state" }, h("h2", { text: title }), h("p", { cls: "muted small", text: text })));
+  }
+
+  document.getElementById("edition").addEventListener("change", function (ev) { followLatest = editions.length && ev.target.value === editions[0].date; showEdition(ev.target.value); window.scrollTo(0, 0); });
+  window.addEventListener("hashchange", function () { render(); window.scrollTo(0, 0); });
+
+  function start(list) {
+    editions = arr(list).filter(function (d) { return d && d.date; }).sort(function (x, y) { return x.date < y.date ? 1 : -1; });
+    if (!editions.length) { stateMsg("Aucune édition pour l'instant", "La prochaine édition arrive demain matin vers 7h (heure de Paris)."); }
+    else { fillSelect(); showEdition(editions[0].date); }
+  }
+  // Les éditions sont dans data/journal.json (mis à jour chaque matin par GitHub Actions).
+  fetch("data/journal.json?t=" + Date.now(), { cache: "no-store" })
+    .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+    .then(start)
+    .catch(function () {
+      var raw = document.getElementById("journal-data");
+      var list = []; try { list = JSON.parse(raw ? raw.textContent : "[]"); } catch (err) {}
+      if (list.length) start(list); else stateMsg("Journal indisponible", "Vérifiez votre connexion puis rouvrez la page.");
+    });
+})();
+</script>
+
+</body></html>

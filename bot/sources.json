@@ -1,0 +1,38 @@
+{
+  "_doc": "Sources surveillées par le bot du fil. Une source qui échoue est simplement ignorée (voir les logs de l'Action).",
+  "rss": [
+    {"label": "CoinDesk", "url": "https://www.coindesk.com/arc/outboundfeeds/rss/", "kind": "crypto"},
+    {"label": "Cointelegraph", "url": "https://cointelegraph.com/rss", "kind": "crypto"},
+    {"label": "Decrypt", "url": "https://decrypt.co/feed", "kind": "crypto"},
+    {"label": "The Block", "url": "https://www.theblock.co/rss.xml", "kind": "crypto"},
+    {"label": "TechCrunch", "url": "https://techcrunch.com/feed/", "kind": "tech"},
+    {"label": "The Verge", "url": "https://www.theverge.com/rss/index.xml", "kind": "tech"},
+    {"label": "Ars Technica", "url": "https://feeds.arstechnica.com/arstechnica/index", "kind": "tech"},
+    {"label": "CNBC Markets", "url": "https://www.cnbc.com/id/10000664/device/rss/rss.html", "kind": "finance"},
+    {"label": "Les Echos Marchés", "url": "https://syndication.lesechos.fr/rss/rss_finance-marches.xml", "kind": "finance"},
+    {"label": "Fed (communiqués)", "url": "https://www.federalreserve.gov/feeds/press_all.xml", "kind": "finance"},
+    {"label": "BCE (communiqués)", "url": "https://www.ecb.europa.eu/rss/press.html", "kind": "finance"},
+    {"label": "SEC (communiqués)", "url": "https://www.sec.gov/news/pressreleases.rss", "kind": "finance"},
+    {"label": "Google Trends US", "url": "https://trends.google.com/trending/rss?geo=US", "kind": "trend"},
+    {"label": "Google Trends FR", "url": "https://trends.google.com/trending/rss?geo=FR", "kind": "trend"}
+  ],
+  "keywords": {
+    "_doc": "Une news n'est envoyée à Claude que si son titre ou son résumé contient au moins un de ces mots (insensible à la casse). Les sources 'trend' et les communiqués officiels passent toujours.",
+    "list": ["bitcoin", "btc", "ether", "eth", "solana", "sol ", "crypto", "memecoin", "meme coin", "doge", "pepe", "shib", "pengu", "bonk", "wif", "trump", "etf", "sec", "stablecoin", "binance", "coinbase", "robinhood", "hyperliquid", "pump.fun", "liquidat", "hack", "exploit", "fed", "powell", "ecb", "bce", "lagarde", "rate", "taux", "inflation", "cpi", "jobs", "payroll", "tariff", "oil", "pétrole", "opec", "nvidia", "openai", "anthropic", "google", "apple", "microsoft", "meta", "tesla", "musk", "ai ", "ia ", "chip", "bourse", "cac", "nasdaq", "s&p", "dow"]
+  },
+  "always_pass_labels": ["Fed (communiqués)", "BCE (communiqués)", "SEC (communiqués)"],
+  "markets": {
+    "_doc": "Identifiants CoinGecko suivis pour les alertes de marché, et seuils de mouvement (en %) depuis la dernière alerte.",
+    "coins": {"bitcoin": 2.0, "ethereum": 3.0, "solana": 4.0, "dogecoin": 5.0}
+  },
+  "memes": {
+    "min_mcap_usd": 10000000,
+    "move_alert_pct": 20,
+    "cooldown_hours": 6
+  },
+  "limits": {
+    "max_candidates_per_run": 25,
+    "news_max_age_hours": 3,
+    "feed_max_posts": 400
+  }
+}
